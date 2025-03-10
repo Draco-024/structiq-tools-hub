@@ -5,7 +5,12 @@ import {
   Settings as SettingsIcon, 
   Globe, 
   CloudUpload,
-  Palette
+  Palette,
+  Building,
+  Phone,
+  Mail,
+  MessageSquare,
+  MapPin
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
@@ -112,6 +117,26 @@ const Settings = () => {
       />
     </button>
   );
+  
+  const CompanyInfoItem = ({ 
+    icon: Icon, 
+    title, 
+    info 
+  }: { 
+    icon: any; 
+    title: string; 
+    info: string | React.ReactNode;
+  }) => (
+    <div className="flex items-center mb-3">
+      <div className="w-8 h-8 rounded-lg bg-accent-color/20 flex items-center justify-center text-accent-color mr-3">
+        <Icon size={18} />
+      </div>
+      <div>
+        <h4 className="text-sm text-gray-300">{title}</h4>
+        <p className="text-sm font-medium">{info}</p>
+      </div>
+    </div>
+  );
 
   return (
     <motion.div 
@@ -171,6 +196,73 @@ const Settings = () => {
           action={toggleSync}
           control={<Switch checked={syncEnabled} onChange={toggleSync} />}
         />
+        
+        <h2 className="text-lg font-semibold mt-8 mb-4">Company Information</h2>
+        
+        <div className="glass p-5 rounded-xl mb-4">
+          <div className="mb-4 text-center">
+            <h3 className="text-xl font-bold text-gradient">Trimurti Infrastructure</h3>
+            <p className="text-sm text-gray-400 italic">Engineering Your Dreams into Reality!</p>
+          </div>
+          
+          <div className="mt-5">
+            <h4 className="text-sm font-semibold mb-3 text-accent-color">Services:</h4>
+            <ul className="space-y-2 mb-5">
+              <li className="flex items-start">
+                <Check size={16} className="text-accent-color shrink-0 mt-0.5 mr-2" />
+                <span className="text-sm">RCC Structure Design (STAAD.Pro, ETABS, AutoCAD, Revit)</span>
+              </li>
+              <li className="flex items-start">
+                <Check size={16} className="text-accent-color shrink-0 mt-0.5 mr-2" />
+                <span className="text-sm">Earthquake-Resistant Design & Analysis</span>
+              </li>
+              <li className="flex items-start">
+                <Check size={16} className="text-accent-color shrink-0 mt-0.5 mr-2" />
+                <span className="text-sm">Project Consultation & Site Supervision</span>
+              </li>
+              <li className="flex items-start">
+                <Check size={16} className="text-accent-color shrink-0 mt-0.5 mr-2" />
+                <span className="text-sm">Quantity Estimation (MT/Kg)</span>
+              </li>
+            </ul>
+            
+            <h4 className="text-sm font-semibold mb-3 text-accent-color">Contact Us:</h4>
+            <div className="space-y-3">
+              <CompanyInfoItem 
+                icon={Phone} 
+                title="Phone" 
+                info="+91 8788017458" 
+              />
+              <CompanyInfoItem 
+                icon={Mail} 
+                title="Email" 
+                info="vishalmore9192@gmail.com" 
+              />
+              <CompanyInfoItem 
+                icon={MessageSquare} 
+                title="WhatsApp" 
+                info="8788017458" 
+              />
+              <CompanyInfoItem 
+                icon={MapPin} 
+                title="Location" 
+                info="Available for site visits across India" 
+              />
+            </div>
+            
+            <div className="mt-5 text-center">
+              <p className="text-xs text-gray-400 flex items-center justify-center space-x-2">
+                <span>Innovative</span>
+                <span className="w-1 h-1 rounded-full bg-accent-color"></span>
+                <span>Safe</span>
+                <span className="w-1 h-1 rounded-full bg-accent-color"></span>
+                <span>Cost-Effective</span>
+                <span className="w-1 h-1 rounded-full bg-accent-color"></span>
+                <span>Reliable</span>
+              </p>
+            </div>
+          </div>
+        </div>
         
         <div className="glass p-4 rounded-xl text-center">
           <h3 className="text-sm text-gray-400">StructIQ</h3>
