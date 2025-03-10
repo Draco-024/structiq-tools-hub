@@ -3,30 +3,17 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { 
   Settings as SettingsIcon, 
-  User, 
-  Moon, 
-  Sun, 
-  Palette, 
   Globe, 
   CloudUpload,
-  LogOut
+  Palette
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 
 const Settings = () => {
   const { toast } = useToast();
-  const [darkMode, setDarkMode] = useState(true);
   const [units, setUnits] = useState('metric');
   const [syncEnabled, setSyncEnabled] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    toast({
-      title: `${!darkMode ? 'Dark' : 'Light'} Mode Enabled`,
-      description: `Theme has been changed to ${!darkMode ? 'dark' : 'light'} mode.`,
-    });
-  };
 
   const toggleUnits = () => {
     const newUnits = units === 'metric' ? 'imperial' : 'metric';
@@ -42,13 +29,6 @@ const Settings = () => {
     toast({
       title: `Cloud Sync ${!syncEnabled ? 'Enabled' : 'Disabled'}`,
       description: `Cloud synchronization has been ${!syncEnabled ? 'enabled' : 'disabled'}.`,
-    });
-  };
-
-  const signOut = () => {
-    toast({
-      title: "Feature Coming Soon",
-      description: "Sign out functionality will be available in a future update.",
     });
   };
 
@@ -109,37 +89,7 @@ const Settings = () => {
           <h1 className="text-2xl font-bold">Settings</h1>
         </div>
         
-        <div className="glass rounded-xl p-5 mb-6">
-          <div className="flex items-center">
-            <div className="w-14 h-14 rounded-full bg-structiq-purple/20 flex items-center justify-center text-structiq-purple">
-              <User size={28} />
-            </div>
-            <div className="ml-4">
-              <h2 className="text-lg font-semibold">Guest User</h2>
-              <p className="text-sm text-gray-400">Free Account</p>
-            </div>
-          </div>
-          
-          <div className="mt-4 pt-4 border-t border-gray-800">
-            <button 
-              onClick={signOut}
-              className="flex items-center text-red-400 hover:text-red-300 transition-colors"
-            >
-              <LogOut size={16} className="mr-2" />
-              Sign Out
-            </button>
-          </div>
-        </div>
-        
         <h2 className="text-lg font-semibold mb-4">Preferences</h2>
-        
-        <SettingItem
-          icon={darkMode ? Moon : Sun}
-          title="Appearance"
-          description={`${darkMode ? 'Dark' : 'Light'} mode is currently active`}
-          action={toggleDarkMode}
-          control={<Switch checked={darkMode} onChange={toggleDarkMode} />}
-        />
         
         <SettingItem
           icon={Palette}

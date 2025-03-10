@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Wrench } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import LevelingTool from '@/components/LevelingTool';
+import SlabDesignTool from '@/components/SlabDesignTool';
 
 const OnSiteTools = () => {
   return (
@@ -19,6 +20,7 @@ const OnSiteTools = () => {
         </div>
         
         <LevelingTool />
+        <SlabDesignTool />
       </div>
       
       <NavBar />
