@@ -10,7 +10,8 @@ import {
   Phone,
   Mail,
   MessageSquare,
-  MapPin
+  MapPin,
+  Check
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
