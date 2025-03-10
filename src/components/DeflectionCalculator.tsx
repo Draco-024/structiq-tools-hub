@@ -1,8 +1,6 @@
-
 import { useState } from 'react';
 import { 
   ArrowUpDown,
-  ChevronDown,
   LineChart,
   Check,
   X
@@ -14,7 +12,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer
 } from 'recharts';
 
@@ -145,11 +142,14 @@ const DeflectionCalculator = () => {
           deflectionCurve.push({ x, deflection });
         }
       } else if (loadType === 'point-center' || loadType === 'point-anywhere') {
-        // For point load at the end of cantilever
+        // For point load on cantilever
+        let a: number;
+        
         if (loadType === 'point-center') {
-          pointLoadPosition = span;  // Force point load at the end
+          a = span * 1000;  // For point-center, place at the end of cantilever
+        } else {
+          a = pointLoadPosition * 1000;  // Distance from fixed end
         }
-        const a = pointLoadPosition * 1000;  // Distance from fixed end
         
         // δ_max = Pa^3/(3EI) for point load on cantilever
         maxDeflection = (load * Math.pow(a, 3)) / (3 * EI);
