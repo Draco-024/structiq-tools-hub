@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Settings as SettingsIcon, 
   Globe, 
@@ -10,14 +10,40 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 
+// Available accent colors
+const ACCENT_COLORS = [
+  { name: 'Purple', value: '#8A2BE2' },
+  { name: 'Teal', value: '#008080' },
+  { name: 'Blue', value: '#1E90FF' },
+  { name: 'Green', value: '#2E8B57' },
+  { name: 'Orange', value: '#FF7F50' },
+  { name: 'Red', value: '#DC143C' }
+];
+
 const Settings = () => {
   const { toast } = useToast();
   const [units, setUnits] = useState('metric');
   const [syncEnabled, setSyncEnabled] = useState(false);
+  const [accentColor, setAccentColor] = useState('#8A2BE2');
+
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedUnits = localStorage.getItem('units');
+    const savedSync = localStorage.getItem('syncEnabled');
+    const savedAccentColor = localStorage.getItem('accentColor');
+    
+    if (savedUnits) setUnits(savedUnits);
+    if (savedSync) setSyncEnabled(savedSync === 'true');
+    if (savedAccentColor) setAccentColor(savedAccentColor);
+    
+    // Update CSS variable for accent color
+    document.documentElement.style.setProperty('--accent-color', savedAccentColor || '#8A2BE2');
+  }, []);
 
   const toggleUnits = () => {
     const newUnits = units === 'metric' ? 'imperial' : 'metric';
     setUnits(newUnits);
+    localStorage.setItem('units', newUnits);
     toast({
       title: `Units Changed to ${newUnits === 'metric' ? 'Metric' : 'Imperial'}`,
       description: `Measurement units have been updated.`,
@@ -26,9 +52,20 @@ const Settings = () => {
 
   const toggleSync = () => {
     setSyncEnabled(!syncEnabled);
+    localStorage.setItem('syncEnabled', (!syncEnabled).toString());
     toast({
       title: `Cloud Sync ${!syncEnabled ? 'Enabled' : 'Disabled'}`,
       description: `Cloud synchronization has been ${!syncEnabled ? 'enabled' : 'disabled'}.`,
+    });
+  };
+
+  const changeAccentColor = (color: string) => {
+    setAccentColor(color);
+    localStorage.setItem('accentColor', color);
+    document.documentElement.style.setProperty('--accent-color', color);
+    toast({
+      title: `Accent Color Updated`,
+      description: `App theme color has been changed.`,
     });
   };
 
@@ -48,7 +85,7 @@ const Settings = () => {
     <div className="glass p-4 rounded-xl mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-start">
-          <div className="w-10 h-10 rounded-lg bg-structiq-purple/20 flex items-center justify-center text-structiq-purple mr-3">
+          <div className="w-10 h-10 rounded-lg bg-accent-color/20 flex items-center justify-center text-accent-color mr-3">
             <Icon size={20} />
           </div>
           <div>
@@ -64,7 +101,7 @@ const Settings = () => {
   const Switch = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
     <button
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        checked ? 'bg-structiq-purple' : 'bg-gray-700'
+        checked ? 'bg-accent-color' : 'bg-gray-700'
       }`}
       onClick={onChange}
     >
@@ -85,7 +122,7 @@ const Settings = () => {
     >
       <div className="p-6">
         <div className="flex items-center mb-6">
-          <SettingsIcon className="mr-3 text-structiq-purple" size={24} />
+          <SettingsIcon className="mr-3 text-accent-color" size={24} />
           <h1 className="text-2xl font-bold">Settings</h1>
         </div>
         
@@ -97,7 +134,19 @@ const Settings = () => {
           description="Customize app accent color"
           action={() => {}}
           control={
-            <button className="w-6 h-6 rounded-full bg-structiq-purple border-2 border-white"></button>
+            <div className="flex space-x-2">
+              {ACCENT_COLORS.map((color) => (
+                <button 
+                  key={color.value}
+                  onClick={() => changeAccentColor(color.value)}
+                  className={`w-6 h-6 rounded-full border-2 ${
+                    accentColor === color.value ? 'border-white' : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: color.value }}
+                  aria-label={`Select ${color.name} theme`}
+                />
+              ))}
+            </div>
           }
         />
         
